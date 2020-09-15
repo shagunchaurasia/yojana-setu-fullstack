@@ -5,6 +5,8 @@ services:
     image: backend
     stdin_open: true
     build: ../backend/api
+    volumes:
+      - ../backend/api/src:/user/src/app/src
     ports:
       - "2000:2000"
     restart: always
@@ -20,3 +22,5 @@ services:
     tty: true
     depends_on:
       - backend
+    volumes:
+      - ../frontend/app/web/src:/user/src/app/src
