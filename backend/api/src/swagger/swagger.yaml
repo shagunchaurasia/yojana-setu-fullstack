@@ -1,0 +1,1276 @@
+swagger: "2.0"
+info:
+  description: "All apis related to Yojana-Setu will be added here"
+  version: "1.0.0"
+  title: Swagger Yojana Setu
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: yojna-setu@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:2000
+basePath: /api/
+tags:
+  - name: Schemes
+    description: All apis related to schemes
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: Auth
+    description: All apis related to authentication
+  - name: User
+    description: All apis related to users
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+schemes:
+  - http
+
+paths:
+  /schemes:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Schemes
+      summary: Add a new scheme
+      operationId: addScheme
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the scheme
+          required: true
+          schema:
+            $ref: "#/definitions/Scheme"
+      responses:
+        "200":
+          description: Added new scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    get:
+      tags:
+        - Schemes
+      summary: Returns all schemes
+      description: Gets list of all schemes
+      operationId: showAllSchemes
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: pageSize
+          type: number
+          description: Per page size
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
+
+      produces:
+        - application/json
+
+      responses:
+        "200":
+          description: Returned the schemes successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /schemes/{schemeId}:
+    put:
+      tags:
+        - Schemes
+      summary: Edit a scheme
+      operationId: editScheme
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: schemeId
+          in: path
+          description: Scheme Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the scheme to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/Scheme"
+      responses:
+        "200":
+          description: Edited the scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /schemes/all:
+    post:
+      tags:
+        - Schemes
+      summary: Returns all schemes using pagination and categoryId
+      description: Return the description with all schemes
+      operationId: showAllSchemesPagination
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: details of your fetch query here
+          required: true
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              schemeType:
+                type: string
+                example: "5d1063f012d30372e2bbad90"
+                default: "5d1063f012d30372e2bbad90"
+              page:
+                type: integer
+                example: 1
+                default: 1
+      responses:
+        "200":
+          description: Returned the schemes successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /schemes/delete:
+    post:
+      tags:
+        - Schemes
+      summary: Delete a scheme
+      operationId: deleteScheme
+
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: ID of the scheme to be deleted
+          required: true
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              schemeId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /schemes/id:
+    post:
+      tags:
+        - Schemes
+      summary: get a scheme using Id
+      operationId: getSchemeById
+
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: body
+          in: body
+          description: ID of the scheme to be retrieved
+          required: true
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              schemeId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+
+  /auth/register:
+    post:
+      tags:
+        - "Auth"
+      summary: "Register user"
+      description: "To register a user as user/content writer"
+      operationId: "register"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Created user object"
+          required: true
+          schema:
+            type: object
+            required:
+              - userEmail
+              - password
+              - userPhone
+            properties:
+              name:
+                type: string
+              userEmail:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+              userPhone:
+                type: string
+      responses:
+        default:
+          description: "successful operation"
+  /auth/login:
+    post:
+      tags:
+        - "Auth"
+      summary: "Login user"
+      description: "This can only be done by the logged in user."
+      operationId: "login"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: user
+          description: The user to create.
+          schema:
+            type: object
+            required:
+              - userEmail
+            properties:
+              userEmail:
+                type: string
+                example: 'chaurasia.shagun@gmail.com'
+              password:
+                type: string
+                example: 'Shagun'
+
+      responses:
+        default:
+          description: "successful operation"
+  /user/login:
+    get:
+      tags:
+        - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "The user name for login"
+          required: true
+          type: "string"
+        - name: "password"
+          in: "query"
+          description: "The password for login in clear text"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        400:
+          description: "Invalid username/password supplied"
+  /user/logout:
+    get:
+      tags:
+        - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /user/{username}:
+    get:
+      tags:
+        - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "path"
+          description: "The name that needs to be fetched. Use user1 for testing. "
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+    put:
+      tags:
+        - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "path"
+          description: "name that need to be updated"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "body"
+          description: "Updated user object"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+        - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "username"
+          in: "path"
+          description: "The name that needs to be deleted"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+  /schemeTypes:
+    get:
+      tags:
+        - SchemeTypes
+      summary: SchemeType master table
+      operationId: getAllSchemeTypes
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - SchemeTypes
+      summary: SchemeType master table
+      operationId: createSchemeTypes
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "craete schemeType object"
+          required: true
+          schema:
+            $ref: "#/definitions/SchemeType"
+      responses:
+        "200":
+          description: created schemeType successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    delete:
+      tags:
+        - "SchemeTypes"
+      summary: "Delete SchemeType"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteSchemeType"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: "schemeTypeId"
+          in: "body"
+          description: "The id of SchemeType that needs to be deleted"
+          required: true
+          type: "string"
+          properties:
+              schemeTypeId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        400:
+          description: "Invalid SchemeType supplied"
+        404:
+          description: "schemeType not found"
+  /schemeTypes/{schemeTypeId}:
+    put:
+      tags:
+        - SchemeTypes
+      summary: Edit a SchemeType
+      operationId: editSchemeType
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: SchemeTypeId
+          in: path
+          description: SchemeType Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the SchemeType to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/SchemeType"
+      responses:
+        "200":
+          description: Edited the schemeType successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /userType:
+    get:
+      tags:
+        - UserType
+      summary: UserType master table
+      operationId: getAllUserType
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - UserType
+      summary: SchemeType master table
+      operationId: createUserType
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "create UserType object"
+          required: true
+          schema:
+            $ref: "#/definitions/UserType"
+      responses:
+        "200":
+          description: created UserType successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    delete:
+      tags:
+        - "UserType"
+      summary: "Delete UserType"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUserType"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: userTypeId
+          in: "body"
+          description: "The id of UserType that needs to be deleted"
+          required: true
+          type: "string"
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              userTypeId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        400:
+          description: "Invalid UserType supplied"
+        404:
+          description: "UserType not found"
+  /userType/{userTypeId}:
+    put:
+      tags:
+        - UserType
+      summary: Edit a UserType
+      operationId: editUserType
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: userTypeId
+          in: path
+          description: UserType Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the UserType to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/UserType"
+      responses:
+        "200":
+          description: Edited the userType successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /state:
+    get:
+      tags:
+        - State
+      summary: State master table
+      operationId: getAllState
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - State
+      summary: State master table
+      operationId: createState
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "craete state object"
+          required: true
+          schema:
+            $ref: "#/definitions/State"
+      responses:
+        "200":
+          description: created state successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    delete:
+      tags:
+        - "State"
+      summary: "Delete state"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteState"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: "stateId"
+          in: "body"
+          description: "The id of state that needs to be deleted"
+          required: true
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              stateId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        400:
+          description: "Invalid stateId supplied"
+        404:
+          description: "state not found"
+  /state/{stateId}:
+    put:
+      tags:
+        - State
+      summary: Edit a state
+      operationId: editState
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: stateId
+          in: path
+          description: State Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the state to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/State"
+      responses:
+        "200":
+          description: Edited the state successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /city:
+    get:
+      tags:
+        - City
+      summary: City master table
+      operationId: getAllCity
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Fetched cities successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - City
+      summary: City master table
+      operationId: createCity
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "creates city object"
+          required: true
+          schema:
+            $ref: "#/definitions/City"
+      responses:
+        "200":
+          description: created city successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    delete:
+      tags:
+        - "City"
+      summary: "Delete city"
+      description: "This can only be done by the logged in user."
+      operationId: "deletecity"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: "cityId"
+          in: "body"
+          description: "The id of city that needs to be deleted"
+          required: true
+          type: "string"
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              cityId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        400:
+          description: "Invalid cityId supplied"
+        404:
+          description: "city not found"
+  /city/{cityId}:
+    put:
+      tags:
+        - City
+      summary: Edit a city
+      operationId: editCity
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: cityId
+          in: path
+          description: city Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the city to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/City"
+      responses:
+        "200":
+          description: Edited the city successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /mail:
+    get:
+      tags:
+        - Mail
+      summary: Mail master table
+      operationId: getAllMail
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - Mail
+      summary: Mail master table
+      operationId: createMail
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "craete Mail object"
+          required: true
+          schema:
+            $ref: "#/definitions/Mail"
+      responses:
+        "200":
+          description: created Mail successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    delete:
+      tags:
+        - "Mail"
+      summary: "Delete Mail"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteMail"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: "mailId"
+          in: "body"
+          description: "The id of Mail that needs to be deleted"
+          required: true
+          schema:
+            type: object
+            required:
+              - Order
+            properties:
+              mailId:
+                type: string
+                example: "5d232b2512d30372e2bbb20d"
+                default: "5d232b2512d30372e2bbb20d"
+      responses:
+        400:
+          description: "Invalid mailId supplied"
+        404:
+          description: "Mail not found"
+  /mail/{mailId}:
+    put:
+      tags:
+        - Mail
+      summary: Edit a Mail
+      operationId: editMail
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - name: mailId
+          in: path
+          description: Mail Id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object carrying details of the Mail to be edited
+          required: true
+          schema:
+            $ref: "#/definitions/Mail"
+      responses:
+        "200":
+          description: Edited the Mail successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+definitions:
+  Scheme:
+    type: object
+    properties:
+      schemeName:
+        type: string
+        example: "Kanya Samriddhi Yojana"
+      description:
+        type: string
+        example: "It is a good scheme"
+      detailedDescription:
+        type: string
+        example: "It is a good scheme"
+      relatedWebsite:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      additionalWebsites:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      emailSupport:
+        type: string
+        example: "abc@gmail.com"
+      statesImplementedIn:
+        type: string
+        example: "UP"
+      schemeType:
+        type: string
+        example: "0"
+      averageRating:
+        type: string
+        example: "3"
+      relatedImage:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      categoryId:
+        type: string
+        example: "0"
+      addedOn:
+        type: string
+        example: "01/05/1995"
+      addedBy:
+        type: string
+        example: "Rahul"
+      modifiedOn:
+        type: string
+        example: "01/05/1995"
+      modifiedBy:
+        type: string
+        example: "Rahul"
+  SchemeType:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "term insurance"
+      commonName:
+        type: string
+        example: "Insurance"
+      alternateName:
+        type: string
+        example: "Term life"
+      isGovt:
+        type: boolean
+        example: false
+      urlSlug:
+        type: string
+        example: '/term-insurance'
+      description:
+        type: string
+        example: "It is a good scheme"
+      detailedDescription:
+        type: string
+        example: "It is a good scheme"
+      relatedImage:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      addedOn:
+        type: string
+        example: "01/05/1995"
+      addedBy:
+        type: string
+        example: "Rahul"
+      modifiedOn:
+        type: string
+        example: "01/05/1995"
+      modifiedBy:
+        type: string
+        example: "Rahul"
+  State:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "uttar pradesh"
+      commonName:
+        type: string
+        example: "UP"
+      alternateName:
+        type: string
+        example: "up"
+      urlSlug:
+        type: string
+        example: '/up'
+      description:
+        type: string
+        example: "It is a good scheme"
+      relatedImage:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      addedOn:
+        type: string
+        example: "01/05/1995"
+      addedBy:
+        type: string
+        example: "Rahul"
+      modifiedOn:
+        type: string
+        example: "01/05/1995"
+      modifiedBy:
+        type: string
+        example: "Rahul"
+  City:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "Jhansi"
+      stateId:
+        type: string
+        example: 'okabcd'
+      commonName:
+        type: string
+        example: "jhansi"
+      alternateName:
+        type: string
+        example: "jhs"
+      urlSlug:
+        type: string
+        example: '/jhansi'
+      description:
+        type: string
+        example: "It is a good city for dummies"
+      relatedImage:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      addedOn:
+        type: string
+        example: "01/05/1995"
+      addedBy:
+        type: string
+        example: "Rahul"
+      modifiedOn:
+        type: string
+        example: "01/05/1995"
+      modifiedBy:
+        type: string
+        example: "Rahul"
+  UserType:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "female"
+      gender:
+        type: string
+        example: "male"
+      isChild:
+        type: boolean
+        example: true
+      isHandicapped:
+        type: boolean
+        example: true
+      isWidowed:
+        type: boolean
+        example: true
+      isPoor:
+        type: boolean
+        example: true
+      isSC:
+        type: boolean
+        example: true
+      isST:
+        type: boolean
+        example: true
+      isOBC:
+        type: boolean
+        example: true
+      isGovtEmployee:
+        type: boolean
+        example: true
+      isUnEmployed:
+        type: boolean
+        example: true
+      isOld:
+        type: boolean
+        example: true
+      commonName:
+        type: string
+        example: "women"
+      alternateName:
+        type: string
+        example: "girls"
+      urlSlug:
+        type: string
+        example: '/women'
+      description:
+        type: string
+        example: "Women oriented"
+      relatedImage:
+        type: string
+        example: "https://www.govtgk.com/wp-content/uploads/2019/10/Kanya-Sumangala-Yojana-Online-Form-2-1024x576.png"
+      addedOn:
+        type: string
+        example: "01/05/1995"
+      addedBy:
+        type: string
+        example: "Rahul"
+      modifiedOn:
+        type: string
+        example: "01/05/1995"
+      modifiedBy:
+        type: string
+        example: "Rahul"
+  Mail:
+    type: object
+    properties:
+      templateName:
+        type: string
+      mailId:
+        type: string
+      mailTo:
+        type: string
+      mailCC:
+        type: string
+      mailBCC:
+        type: string
+      attachment:
+        type: string
+      addedDate:
+        type: string
+      subject:
+        type: string
+      mailBody:
+        type: string
+      status:
+        type: string
+      signature:
+        type: string       
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      userEmail:
+        type: string
+      role:
+        type: string
+      password:
+        type: string
+      userPhone:
+        type: string
+
+    xml:
+      name: User
+  ApiResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      type:
+        type: string
+      message:
+        type: string
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

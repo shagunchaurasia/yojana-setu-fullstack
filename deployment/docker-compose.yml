@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  backend:
+    image: backend
+    stdin_open: true
+    build: ../backend/api
+    ports:
+      - "2000:2000"
+    restart: always
+
+  # Frontend / App / Web
+  web:
+    image: web
+    build: ../frontend/app/web
+    restart: always
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    tty: true
+    depends_on:
+      - backend
