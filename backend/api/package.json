@@ -1,17 +1,18 @@
 {
-  "name": "mail-manager-backend",
+  "name": "yojana-setu-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "ENV=PROD  node src/index.js",
-    "dev": "ENV=DEV ./node_modules/.bin/nodemon   -e yaml,js --watch ./src/ --watch src/swagger/swagger.yaml src/index.js"
+    "dev": "ENV=DEV ./node_modules/.bin/nodemon  -e yaml,js --watch ./src/ --watch src/swagger/swagger.yaml src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "nodemon": "latest",
     "body-parser": "^1.19.0",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.5",
@@ -26,7 +27,6 @@
     "morgan": "^1.10.0",
     "node-geocoder": "^3.27.0",
     "nodemailer": "^6.4.11",
-    "nodemon": "^2.0.4",
     "slugify": "^1.4.0",
     "swagger-ui-express": "^4.1.4",
     "yamljs": "^0.3.0"
