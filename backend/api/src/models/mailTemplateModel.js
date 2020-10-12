@@ -41,7 +41,18 @@ var MailTemplateSchema = new Schema({
     },
     signature: {
         type: String
-    }
+    },
+    reviewer: {
+        type: mongoose.Schema.ObjectId
+    },
+    reviewState: {
+        type: String,
+        enum : ['UnAssigned','Pending','Approved','Rejected'],
+        default: 'user'
+    },
+    reviewNotes: {
+        type: String
+    },
 },{collection:'mailTemplate'});
 
 var MailTemplateModel = mongoose.model('mailTemplate',MailTemplateSchema);
