@@ -19,6 +19,9 @@ const JoiSchemas = {
     addedOn: Joi.string(),
     modifiedBy: Joi.string(),
     addedBy: Joi.string(),
+    reviewer: Joi.string(),
+    reviewState: Joi.string().valid('UnAssigned', 'Pending', 'Approved', 'Rejected'),
+    reviewNotes: Joi.string()
   }),
   userSchema: Joi.object().keys({
     userEmail: Joi.string().required(),

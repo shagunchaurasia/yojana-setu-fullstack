@@ -53,17 +53,6 @@ const stateSchema = new mongoose.Schema(
     status: {
       type: Number,
     },
-    reviewer: {
-      type: mongoose.Schema.ObjectId
-    },
-    reviewState: {
-      type: String,
-      enum : ['UnAssigned','Pending','Approved','Rejected'],
-      default: 'user'
-    },
-    reviewNotes: {
-      type: String
-    },
   },
   { collection: "state" }
 );

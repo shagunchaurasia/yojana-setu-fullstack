@@ -109,6 +109,9 @@ obj.create = function (data) {
       modifiedBy: data.modifiedBy,
       status: 1,
       addedByUserId: data.addedByUserId,
+      reviewer: data.reviewer,
+      reviewState: data.reviewState,
+      reviewNotes: data.reviewNotes
     });
 
     SchemeData.save()
