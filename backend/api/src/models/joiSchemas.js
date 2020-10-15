@@ -122,6 +122,12 @@ const JoiSchemas = {
   mailIdSchema: Joi.object().keys({
     mailId: Joi.string().required(),
   }),
+  updateLogSchema: Joi.object().keys({
+    name: Joi.string().required().max(200),
+    description: Joi.string().max(200),
+    addedBy: Joi.string().max(200),
+    timeLog: Joi.string(),
+  }),
 };
 
 module.exports = JoiSchemas;
