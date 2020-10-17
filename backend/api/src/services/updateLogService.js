@@ -47,7 +47,7 @@ obj.create = function (data) {
     let logData = new UpdateLogModel({
       name: data.name,
       description: data.description,
-      addedBy: 'TO_DO',
+      addedBy: data.addedBy,
       timeLog: data.timeLog,
     });
 
