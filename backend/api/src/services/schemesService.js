@@ -7,20 +7,27 @@ let obj = {};
 
 // Fetches all schemes
 obj.fetchAllSchemes = function (...args) {
-  console.log("fetching schemes");
-  let { select, sort, queryString, limit, skip } = args[0].query;
-  console.log(JSON.parse(queryString));
+  let { select, sort, queryString, limit, skip, currentPage } = args[0].query;
+  let totalDataCount = 0;
+  queryString = JSON.parse(queryString);
 
   return new Promise(function (resolve, reject) {
-    SchemeModel.find()
+  SchemeModel.count(queryString).exec((error, count) => {
+    if (error) {
+      reject(err);
+    }
+    totalDataCount = count;
+    SchemeModel.find(queryString)
       .select(select)
       .sort(sort)
-      .limit(limit)
       .skip(skip)
+      .limit(limit)
       .then((schemeRes) => {
         if (schemeRes) {
           console.log(schemeRes);
-          resolve(schemeRes);
+          console.log("Here inside mail response");
+          console.log(totalDataCount);
+          resolve({ data: schemeRes, total: totalDataCount, currentPage });
         } else {
           resolve({});
         }
@@ -28,8 +35,9 @@ obj.fetchAllSchemes = function (...args) {
       .catch((err) => {
         reject(err);
       });
+    });
   });
-};
+}
 
 // Fetches a particular scheme
 obj.fetchSchemeById = function (schemeId) {

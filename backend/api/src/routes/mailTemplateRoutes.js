@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const mailController = require("../controllers/mailTemplateController");
 const validationJoiMiddleware = require("../middleware/validationJoi");
+const requestParserMiddleware = require("../middleware/requestParserMiddleware");
 const joiSchemas = require("../models/joiSchemas");
 const {
     protectMiddleware,
@@ -10,6 +11,7 @@ const {
 // get all mails 
 router.get("",
 protectMiddleware,
+requestParserMiddleware,
 authorizeRolesRoutes("user"), mailController.fetchAll);
 
 // create mail

@@ -23,6 +23,40 @@ obj.fetchAll = function (...args) {
   });
 };
 
+// Fetches all mails
+obj.fetchAllSchemes = function (...args) {
+  let { select, sort, queryString, limit, skip, currentPage } = args[0].query;
+  let totalDataCount = 0;
+  queryString = JSON.parse(queryString);
+
+  return new Promise(function (resolve, reject) {
+    MailModel.count(queryString).exec((error, count) => {
+    if (error) {
+      reject(err);
+    }
+    totalDataCount = count;
+    MailModel.find(queryString)
+      .select(select)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .then((mailRes) => {
+        if (mailRes) {
+          console.log(mailRes);
+          console.log("Here inside mail response");
+          console.log(totalDataCount);
+          resolve({ data: mailRes, total: totalDataCount, currentPage });
+        } else {
+          resolve({});
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
+  });
+}
+
 // Fetches a particular Mail
 obj.fetchMailById = function (mailId) {
   return new Promise(function (resolve, reject) {
@@ -50,12 +84,11 @@ obj.create = function (data) {
       mailCC: data.mailCC,
       mailBCC: data.mailBCC,
       attachment: data.attachment,
-      addedDate: data.addedDate,
+      addedDate: Date.now(),
       subject: data.subject,
       status: 1,
       signature: data.signature,
     });
-
  MailData.save()
       .then((mailRes) => {
         let Mail = _.pick(mailRes, ["id"]);

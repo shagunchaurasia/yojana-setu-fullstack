@@ -82,9 +82,9 @@ paths:
           type: string
           description: Fields to sort by
         - in: query
-          name: pageSize
+          name: currentPage
           type: number
-          description: Per page size
+          description: Current Page Index
         - in: query
           name: limitSize
           type: number
@@ -666,6 +666,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Deleted scheme successfully
@@ -781,6 +801,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Fetched cities successfully
@@ -897,6 +937,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Deleted scheme successfully
@@ -1301,8 +1361,6 @@ definitions:
     type: object
     properties:
       templateName:
-        type: string
-      mailId:
         type: string
       mailTo:
         type: string
