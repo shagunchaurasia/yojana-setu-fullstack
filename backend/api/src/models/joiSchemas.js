@@ -19,6 +19,9 @@ const JoiSchemas = {
     addedOn: Joi.string(),
     modifiedBy: Joi.string(),
     addedBy: Joi.string(),
+    reviewer: Joi.string(),
+    reviewState: Joi.string().valid('UnAssigned', 'Pending', 'Approved', 'Rejected'),
+    reviewNotes: Joi.string()
   }),
   userSchema: Joi.object().keys({
     userEmail: Joi.string().required(),
@@ -118,6 +121,11 @@ const JoiSchemas = {
   }),
   mailIdSchema: Joi.object().keys({
     mailId: Joi.string().required(),
+  }),
+  updateLogSchema: Joi.object().keys({
+    name: Joi.string().required().max(200),
+    description: Joi.string().max(200),
+    timeLog: Joi.string(),
   }),
 };
 

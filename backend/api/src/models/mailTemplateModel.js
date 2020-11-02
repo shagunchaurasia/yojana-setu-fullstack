@@ -9,12 +9,6 @@ var MailTemplateSchema = new Schema({
          trim: true,
          maxlength: [200, "Template Name cannot be more than 200 characters"],
         },
-    mailId: {
-        required: [true, "MailId of the city cannot be empty"],
-        type: String,
-        trim: true,
-        maxlength: [200, "MailId of the city cannot be more than 200 characters"],
-        },
     mailTo  : {
         type: String
     },

@@ -86,6 +86,17 @@ const schemeSchema = new mongoose.Schema(
     modifiedBy: {
       type: String,
     },
+    reviewer: {
+      type: mongoose.Schema.ObjectId
+    },
+    reviewState: {
+      type: String,
+      enum : ['UnAssigned','Pending','Approved','Rejected'],
+      default: 'user'
+    },
+    reviewNotes: {
+      type: String
+    },
     status: {
       type: Number,
     },

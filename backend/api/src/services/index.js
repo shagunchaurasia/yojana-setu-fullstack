@@ -6,6 +6,7 @@ const stateService = require("./stateService");
 const cityService = require("./cityService");
 const userTypeService = require("./userTypeService");
 const mailTemplateService = require("./mailTemplateService");
+const updateLogService = require("./updateLogService");
 module.exports = {
   schemes,
   auth,
@@ -15,4 +16,5 @@ module.exports = {
   cityService,
   userTypeService,
   mailTemplateService,
+  updateLogService
 };

@@ -6,10 +6,13 @@ const {
     protectMiddleware,
     authorizeRolesRoutes,
   } = require("./../middleware/authMiddleware");
+const requestParserMiddleware = require("../middleware/requestParserMiddleware");
+
   
 // get all states 
 router.get("",
 protectMiddleware,
+requestParserMiddleware,
 authorizeRolesRoutes("user"), stateController.fetchAll);
 
 // create state

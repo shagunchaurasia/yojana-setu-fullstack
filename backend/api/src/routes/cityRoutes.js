@@ -2,6 +2,7 @@ const router = require("express").Router();
 const cityController = require("../controllers/cityController");
 const validationJoiMiddleware = require("../middleware/validationJoi");
 const joiSchemas = require("../models/joiSchemas");
+const requestParserMiddleware = require("../middleware/requestParserMiddleware");
 const {
     protectMiddleware,
     authorizeRolesRoutes,
@@ -9,6 +10,7 @@ const {
   
 router.get("",
   protectMiddleware,
+  requestParserMiddleware,
   authorizeRolesRoutes("user"), cityController.fetchAll);
 
 router.post("",

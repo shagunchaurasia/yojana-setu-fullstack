@@ -10,7 +10,7 @@ const {
 const requestParserMiddleware = require("../middleware/requestParserMiddleware");
 
 // Get All the schemes
-router.get("", requestParserMiddleware, schemesController.showAllSchemes);
+router.get("", protectMiddleware, requestParserMiddleware, schemesController.showAllSchemes);
 
 // Get All the schemes using type with pagination
 router.post("/all", schemesController.showSchemePaginationType);

@@ -5,16 +5,26 @@ const _ = require("lodash");
 
 let obj = {};
 
-// Fetches all citys
+// Fetches all cities
 obj.fetchAll = function (...args) {
-  console.log("fetching cities");
+  let { select, sort, queryString, limit, skip, currentPage } = args[0].query;
+  let totalDataCount = 0;
+  queryString = JSON.parse(queryString);
 
   return new Promise(function (resolve, reject) {
-    cityModel.find()
+    cityModel.count(queryString).exec((error, count) => {
+    if (error) {
+      reject(err);
+    }
+    totalDataCount = count;
+    cityModel.find(queryString)
+      .select(select)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
       .then((cityRes) => {
         if (cityRes) {
-          console.log(cityRes);
-          resolve(cityRes);
+          resolve({ data: cityRes, total: totalDataCount, currentPage });
         } else {
           resolve({});
         }
@@ -22,8 +32,9 @@ obj.fetchAll = function (...args) {
       .catch((err) => {
         reject(err);
       });
+    });
   });
-};
+}
 
 // Fetches a particular city
 obj.fetchcityById = function (cityId) {

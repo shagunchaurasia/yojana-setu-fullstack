@@ -7,14 +7,24 @@ let obj = {};
 
 // Fetches all states
 obj.fetchAll = function (...args) {
-  console.log("fetching states");
+  let { select, sort, queryString, limit, skip, currentPage } = args[0].query;
+  let totalDataCount = 0;
+  queryString = JSON.parse(queryString);
 
   return new Promise(function (resolve, reject) {
-    StateModel.find()
+    StateModel.count(queryString).exec((error, count) => {
+    if (error) {
+      reject(err);
+    }
+    totalDataCount = count;
+    StateModel.find(queryString)
+      .select(select)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
       .then((stateRes) => {
         if (stateRes) {
-          console.log(stateRes);
-          resolve(stateRes);
+          resolve({ data: stateRes, total: totalDataCount, currentPage });
         } else {
           resolve({});
         }
@@ -22,8 +32,9 @@ obj.fetchAll = function (...args) {
       .catch((err) => {
         reject(err);
       });
+    });
   });
-};
+}
 
 // Fetches a particular state
 obj.fetchStateById = function (stateId) {

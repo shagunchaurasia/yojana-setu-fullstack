@@ -1,11 +1,19 @@
 const requestParserMiddleware = (request, response, next) => {
+  console.log("inside requestParserMiddleware");
+  console.log(request.query);
   let requestQuery = {
     ...request.query,
   };
-  let fields, sortFields, pageSize, limit;
+  let fields, sortFields, limitSize, currentPage;
   let query = {};
+  let paginationData = {};
   //Fields to exclude for matching
-  const removeFields = ["selectFields", "sortFields", "pageSize", "limitSize"];
+  const removeFields = [
+    "selectFields",
+    "sortFields",
+    "limitSize",
+    "currentPage",
+  ];
 
   //Loop over the remove fields and delete from requestQuery
   removeFields.forEach((param) => delete requestQuery[param]);
@@ -30,13 +38,20 @@ const requestParserMiddleware = (request, response, next) => {
     sortFields = request.query.sortFields.split(",").join(" ");
   }
 
-  pageSize = parseInt(request.query.pageSize, 10) || 1;
-  limit = parseInt(request.query.limitSize, 10) || 20;
-  let startIndex = (pageSize - 1) * limit;
-  let endIndex = pageSize * limit;
+  // let pageSize = parseInt(request.query.pageSize, 10) || 1;
+  // limit = parseInt(request.query.limitSize, 10) || 20;
+  // let startIndex = (pageSize - 1) * limit;
+  // let endIndex = pageSize * limit;
 
+  // console.log("Page size" + pageSize);
+  // console.log("Limit Size" + limit);
+
+  currentPage = parseInt(request.query.currentPage, 10) || 1;
+  limitSize = parseInt(request.query.limitSize) || 10;
+
+  let skip = (currentPage - 1) * limitSize;
   if (typeof fields != "undefined") {
-    console.log("Inside selevct fields");
+    console.log("Inside select fields");
     console.log(fields);
     query["select"] = fields;
   }
@@ -48,17 +63,24 @@ const requestParserMiddleware = (request, response, next) => {
     console.log(queryString);
     query["queryString"] = queryString;
   }
-  let skip = 0;
   query["skip"] = skip;
-  query["limit"] = limit;
+  query["limit"] = limitSize;
+  query["currentPage"] = currentPage;
 
+  if (request.query.currentPage && request.query.limitSize) {
+    console.log("pagination stuff found");
+    paginationData = { currentPage, limitSize };
+  }
   request.modifiedQuery = {
     query,
-    paginationData: { startIndex, endIndex, pageSize, limit },
+    paginationData,
   };
 
   console.log("query");
   console.log(query);
+
+  console.log("request updated as");
+  console.log(request.modifiedQuery);
   next();
 };
 

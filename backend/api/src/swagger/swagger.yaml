@@ -82,9 +82,9 @@ paths:
           type: string
           description: Fields to sort by
         - in: query
-          name: pageSize
+          name: currentPage
           type: number
-          description: Per page size
+          description: Current Page Index
         - in: query
           name: limitSize
           type: number
@@ -666,6 +666,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Deleted scheme successfully
@@ -781,6 +801,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Fetched cities successfully
@@ -897,6 +937,26 @@ paths:
           description: JWT token to be passed as a header
           required: true
           type: string
+        - in: query
+          name: selectFields
+          type: string
+          description: Fields to select from the table (comma seperated)
+        - in: query
+          name: sortFields
+          type: string
+          description: Fields to sort by
+        - in: query
+          name: currentPage
+          type: number
+          description: Current Page Index
+        - in: query
+          name: limitSize
+          type: number
+          description: Limit per page
+        - in: query
+          name: queryString
+          type: string
+          description: Filters to be applied while fetching data
       responses:
         "200":
           description: Deleted scheme successfully
@@ -997,6 +1057,83 @@ paths:
           description: Validation Error
         "405":
           description: Invalid input
+  /mail:
+    get:
+      tags:
+        - Mail
+      summary: Mail master table
+      operationId: getAllMail
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Deleted scheme successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+    post:
+      tags:
+        - Mail
+      summary: Mail master table
+      operationId: createMail
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "craete Mail object"
+          required: true
+          schema:
+            $ref: "#/definitions/Mail"
+      responses:
+        "200":
+          description: created Mail successfully
+        "401":
+          description: Validation Error
+        "405":
+          description: Invalid input
+  /updateLog:
+    post:
+      tags:
+        - Log
+      summary: Log creation api
+      operationId: createLog
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: authorization
+          in: header
+          description: JWT token to be passed as a header
+          required: true
+          type: string
+        - in: "body"
+          name: "body"
+          description: "craete Log object"
+          required: true
+          schema:
+            $ref: "#/definitions/updateLog"
+    responses:
+      "200":
+        description: created Log successfully
+      "401":
+        description: Validation Error
+      "405":
+        description: Invalid input
 definitions:
   Scheme:
     type: object
@@ -1225,8 +1362,6 @@ definitions:
     properties:
       templateName:
         type: string
-      mailId:
-        type: string
       mailTo:
         type: string
       mailCC:
@@ -1244,7 +1379,16 @@ definitions:
       status:
         type: string
       signature:
-        type: string       
+        type: string
+  updateLog:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      timeLog:
+        type: string     
   User:
     type: object
     properties:
@@ -1274,3 +1418,4 @@ definitions:
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
+
