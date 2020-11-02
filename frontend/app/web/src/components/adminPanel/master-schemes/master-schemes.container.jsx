@@ -1,6 +1,6 @@
 import React from "react";
 import MasterSchemesComponent from "./master-schemes.component";
-import withData from "./../../shared/withData/withData.component";
+import withData from "../../shared/withData/withData.component";
 
 const MasterSchemes = (props) => {
   return (

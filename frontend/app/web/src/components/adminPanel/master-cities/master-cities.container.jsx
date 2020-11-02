@@ -1,6 +1,6 @@
 import React from "react";
 import MasterCitiesComponent from "./master-cities.component";
-import withData from "./../../shared/withData/withData.component";
+import withData from "../../shared/withData/withData.component";
 
 const MasterCities = (props) => {
   return (
