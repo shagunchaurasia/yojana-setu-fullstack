@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   errorMessage: undefined,
   mailTemplate: {},
   mailTemplateDetailFetching: false,
+  isDeleting: false,
 };
 
 const mailTemplateReducer = (state = INITIAL_STATE, action) => {
@@ -53,12 +54,24 @@ const mailTemplateReducer = (state = INITIAL_STATE, action) => {
         errorMessage: action.payload,
       };
     }
-    case MailTemplatesActionTypes.UPDATE_MAIL_TEMPLATE_PARAMS: {
+    case MailTemplatesActionTypes.DELETE_MAIL_TEMPLATE_START: {
+      console.log("INSIDE REDUCERA");
       return {
         ...state,
-        mailTemplates: {
-          currentPage: action.payload.currentPage,
-        },
+        isDeleting: true,
+      };
+    }
+    case MailTemplatesActionTypes.DELETE_MAIL_TEMPLATE_SUCCESS: {
+      return {
+        ...state,
+        isDeleting: false,
+      };
+    }
+    case MailTemplatesActionTypes.DELETE_MAIL_TEMPLATE_FAILURE: {
+      return {
+        ...state,
+        errorMessage: action.payload,
+        isDeleting: false,
       };
     }
 

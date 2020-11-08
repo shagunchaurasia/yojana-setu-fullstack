@@ -922,7 +922,7 @@ paths:
           description: Validation Error
         "405":
           description: Invalid input
-  /mail:
+  /mailTemplates:
     get:
       tags:
         - Mail

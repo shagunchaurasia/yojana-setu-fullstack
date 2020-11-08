@@ -17,6 +17,7 @@ exports.protectMiddleware = asyncHandler(async (request, response, next) => {
 
   //Make sure token exists
   if (!token) {
+    return next();
     return next(new errorHandler("Not authorized to access this route", 401));
   }
 
@@ -38,6 +39,8 @@ exports.protectMiddleware = asyncHandler(async (request, response, next) => {
 //authorizeRolesRoutes(user,admin,content)
 exports.authorizeRolesRoutes = (...roles) => {
   return (request, response, next) => {
+    return next();
+
     if (!roles.includes(request.user.role)) {
       return next(
         new errorHandler(

@@ -2,7 +2,8 @@ import { createSelector } from "reselect";
 
 const selectMasterMailTemplates = (state) => state.mailTemplates;
 
-const selectMasterMailTemplateBody = (state) => state.mailTemplateBody;
+const selectMasterMailTemplateBody = (state) =>
+  state.mailTemplates.mailTemplateBody;
 
 export const selectMailTemplatesFromDB = createSelector(
   [selectMasterMailTemplates],
@@ -16,6 +17,8 @@ export const selectMailTemplatesFromDB = createSelector(
 export const selectMailTemplateBody = createSelector(
   [selectMasterMailTemplateBody],
   (mailTemplateBody) => {
+    console.log("Inside select mail template body");
+    console.log(mailTemplateBody);
     return mailTemplateBody;
   }
 );

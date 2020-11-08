@@ -20,8 +20,13 @@ const JoiSchemas = {
     modifiedBy: Joi.string(),
     addedBy: Joi.string(),
     reviewer: Joi.string(),
-    reviewState: Joi.string().valid('UnAssigned', 'Pending', 'Approved', 'Rejected'),
-    reviewNotes: Joi.string()
+    reviewState: Joi.string().valid(
+      "UnAssigned",
+      "Pending",
+      "Approved",
+      "Rejected"
+    ),
+    reviewNotes: Joi.string(),
   }),
   userSchema: Joi.object().keys({
     userEmail: Joi.string().required(),
@@ -39,7 +44,7 @@ const JoiSchemas = {
     addedBy: Joi.string().max(200),
     modifiedOn: Joi.string().max(200),
     modifiedBy: Joi.string().max(200),
-    status: Joi.string().max(200),  
+    status: Joi.number(),
   }),
   schemeTypeIdSchema: Joi.object().keys({
     schemeTypeId: Joi.string().required(),
@@ -56,7 +61,7 @@ const JoiSchemas = {
     addedBy: Joi.string().max(200),
     modifiedOn: Joi.string().max(200),
     modifiedBy: Joi.string().max(200),
-    status: Joi.string().max(200),  
+    status: Joi.number(),
   }),
   stateIdSchema: Joi.object().keys({
     stateId: Joi.string().required(),
@@ -74,7 +79,7 @@ const JoiSchemas = {
     addedBy: Joi.string().max(200),
     modifiedOn: Joi.string().max(200),
     modifiedBy: Joi.string().max(200),
-    status: Joi.string().max(200),  
+    status: Joi.number(),
   }),
   cityIdSchema: Joi.object().keys({
     cityId: Joi.string().required(),
@@ -102,7 +107,7 @@ const JoiSchemas = {
     addedBy: Joi.string().max(200),
     modifiedOn: Joi.string().max(200),
     modifiedBy: Joi.string().max(200),
-    status: Joi.string().max(200),  
+    status: Joi.number(),
   }),
   userTypeIdSchema: Joi.object().keys({
     userTypeId: Joi.string().required(),
@@ -116,11 +121,14 @@ const JoiSchemas = {
     addedDate: Joi.string().max(200),
     subject: Joi.string().max(200),
     mailBody: Joi.string().max(2000),
-    status: Joi.string().max(200),
-    signature: Joi.string().max(200)
+    status: Joi.number(),
+    signature: Joi.string().max(200),
   }),
   mailIdSchema: Joi.object().keys({
     mailId: Joi.string().required(),
+  }),
+  mailTemplateIdSchema: Joi.object().keys({
+    mailTemplateId: Joi.string().required(),
   }),
   updateLogSchema: Joi.object().keys({
     name: Joi.string().required().max(200),

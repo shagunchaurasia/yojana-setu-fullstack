@@ -43,6 +43,8 @@ function prepareResponse(response, dataToPass, ...others) {
 
   //When pagination data is to be sent
   if (others.length) {
+    console.log("HEre is the final result");
+    console.log(totalPages);
     return response.status(statusCode).json({
       status: status,
       count: totalData,

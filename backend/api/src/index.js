@@ -14,6 +14,8 @@ const cityRoutes = require("./routes/cityRoutes");
 const userTypeRoutes = require("./routes/userTypeRoutes");
 const updateLogRoutes = require("./routes/updateLogRoutes");
 const mailRoutes = require("./routes/mailTemplateRoutes");
+const mailTemplateRoutes = require("./routes/mailTemplateRoutes");
+
 const mongoDBConnection = require("./config/database");
 const colors = require("colors");
 const errorHandler = require("./middleware/error");
@@ -39,7 +41,10 @@ app.use("/api/state", stateRoutes);
 app.use("/api/city", cityRoutes);
 app.use("/api/userType", userTypeRoutes);
 app.use("/api/updateLog", updateLogRoutes);
+app.use("/api/mailTemplates", mailTemplateRoutes);
+
 app.use("/api/mail", mailRoutes);
+
 app.use(errorHandler);
 
 // app.use("", (request, response, next) => {

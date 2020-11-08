@@ -2,24 +2,19 @@ import React, { Component } from "react";
 import MasterMailTemplateAddComponent from "./master-mail-template-add.component";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
-import { Formik, isPromise } from "formik";
 import axios from "axios";
 import { connect } from "react-redux";
-import CustomizedButton from "../../shared/customizedForm/customizedButton/customizedButton.component";
 import {
   SpinnerOverlay,
   SpinnerContainer,
 } from "../../shared/withSpinner/withSpinner.style";
-
-import CustomizedInput from "../../shared/customizedForm/customizedInput/customizedInput.component";
 import {
   updateMailTemplateBody,
   fetchMailTemplateStartAsync,
 } from "../../../redux/masterMailTemplates/masterMailTemplates.action";
 import {
   selectMailTemplateBody,
-  // selectMailTemplatesFromDB,
-  // fetchMailTemplateDetails,
+  fetchMailTemplateDetails,
   selectIsMailTemplateDetailFetching,
 } from "../../../redux/masterMailTemplates/masterMailTemplates.selector";
 import {
@@ -50,7 +45,9 @@ class MasterMailTemplateAdd extends Component {
   saveData = (values) => {
     console.log("values from form");
     console.log(values);
-
+    console.log(this.props);
+    console.log(this.props.selectMailTemplateBody);
+    // return false;
     const mailTemplateParams = {
       templateName: values.templateName,
       mailTo: values.mailTo,
@@ -58,7 +55,7 @@ class MasterMailTemplateAdd extends Component {
       mailBCC: values.mailBCC,
       addedDate: new Date(),
       subject: values.subject,
-      mailBody: values.mailBody,
+      mailBody: this.props.selectMailTemplateBody,
       status: 1,
     };
 
@@ -66,13 +63,7 @@ class MasterMailTemplateAdd extends Component {
       .post("http://localhost:2000/api/mailTemplates", mailTemplateParams)
       .then((response) => {
         console.log(response);
-        let modalDetails = {
-          modalType: "info",
-          modalProps: {
-            open: true,
-          },
-        };
-        this.props.showModal(modalDetails);
+
         let snackBarDetails = {
           snackType: "Success",
           snackProps: {
@@ -91,66 +82,6 @@ class MasterMailTemplateAdd extends Component {
         };
         this.props.showModal(modalDetails);
       });
-    // onSubmit={(values, { setSubmitting }) => {
-    //     setTimeout(() => {
-    //       alert(JSON.stringify(values, null, 2));
-    //       setSubmitting(false);
-
-    //       const mailTemplateBody = {
-    //         templateName: values.templateName,
-    //         mailTo: values.mailTo,
-    //         mailCC: values.mailCC,
-    //         mailBCC: values.BCC,
-    //         // attachment: values.,
-    //         addedDate: new Date(),
-    //         subject: values.subject,
-    //         mailBody: values.mailBody,
-    //         status: 1,
-    //         // signature: values.,
-    //       };
-
-    //       axios
-    //         .post("http://localhost:2000/api/mailTemplates", mailTemplateBody)
-    //         .then((response) => {
-    //           console.log(response);
-    //           if (response.data.status == true) {
-    //             let modalDetails = {
-    //               modalType: "info",
-    //               modalProps: {
-    //                 open: true,
-    //               },
-    //             };
-    //             props.showModal(modalDetails);
-    //             let snackBarDetails = {
-    //               snackType: "Success",
-    //               snackProps: {
-    //                 open: true,
-    //               },
-    //             };
-    //             props.showSnackbar(snackBarDetails);
-    //             // props.history.goBack();
-    //           } else {
-    //             alert("error");
-    //             let modalDetails = {
-    //               modalType: "error",
-    //               modalProps: {
-    //                 open: true,
-    //               },
-    //             };
-    //             props.showModal(modalDetails);
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           let modalDetails = {
-    //             modalType: "error",
-    //             modalProps: {
-    //               open: true,
-    //             },
-    //           };
-    //           props.showModal(modalDetails);
-    //         });
-    //     }, 400);
-    //   }}
   };
 
   goBack = () => {
@@ -166,13 +97,15 @@ class MasterMailTemplateAdd extends Component {
         ) : (
           <MasterMailTemplateAddComponent
             updateMailTemplateBody={this.props.updateMailTemplateBody}
-            // values={
-            //   this.props.match.url.includes("edit")
-            //     ? this.props.fetchMailTemplateDetails
-            //     : {}
-            // }
+            values={
+              this.props.match.url.includes("edit")
+                ? this.props.fetchMailTemplateDetails
+                : {}
+            }
+            selectMailTemplateBody={this.props.selectMailTemplateBody}
             goBack={() => this.goBack()}
             onSubmit={(values) => this.saveData(values)}
+            editProp={this.props.match.url.includes("edit") ? "edit" : "add"}
           ></MasterMailTemplateAddComponent>
         )}
       </div>
@@ -186,7 +119,7 @@ const mapStateToProps = createStructuredSelector({
   selectModalDisplay: selectModalDisplay,
   selectSnackBarDetails: selectSnackBarDetails,
   isMailTemplateDetailFetching: selectIsMailTemplateDetailFetching,
-  // fetchMailTemplateDetails: fetchMailTemplateDetails,
+  fetchMailTemplateDetails: fetchMailTemplateDetails,
 });
 
 const mapDispatchToProps = (dispatch) => ({

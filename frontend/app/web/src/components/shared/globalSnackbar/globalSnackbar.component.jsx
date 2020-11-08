@@ -27,7 +27,7 @@ const GlobalSnackbar = (props) => {
   };
   return (
     <div>
-      <button onClick={handleClick}>Show snackbar</button>
+      {/* <button onClick={handleClick}>Show snackbar</button> */}
       <Snackbar
         open={props.selectSnackBarDetails.snackProps.open}
         autoHideDuration={5000}

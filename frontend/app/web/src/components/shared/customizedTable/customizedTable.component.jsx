@@ -199,6 +199,7 @@ const CustomizedTable = ({
           </TableBody>
           <TableFooter>
             <TablePagination
+              style={{ width: "100%" }}
               // rowsPerPageOptions={[5, 10, 20, { label: "All", value: -1 }]}
               rowsPerPageOptions={[5, 10, 20, 30]}
               colSpan={3}
@@ -206,7 +207,7 @@ const CustomizedTable = ({
               rowsPerPage={pageSize}
               page={pageIndex}
               SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
+                inputProps: { "aria-label": "Rows Per Page" },
                 native: true,
               }}
               onChangePage={(e) => gotoPage(e)}

@@ -22,7 +22,7 @@ import MasterMailDetailView from "./components/adminPanel/master-mail-detail/mas
 import { showModal, hideModal } from "./redux/globalModal/globalModal.action";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 // import Footer from "./components/shared/Footer/Footer.component";
-// import MasterMailTemplateAdd from "./components/adminPanel/master-mail-template-add/master-mail-template-add.container";
+import MasterMailTemplateAdd from "./components/adminPanel/master-mail-template-add/master-mail-template-add.container";
 import { selectModalDetails } from "./redux/globalModal/globalModal.selector";
 import { createStructuredSelector } from "reselect";
 import GlobalModal from "./components/shared/globalModal/globalModal.component";
@@ -234,14 +234,14 @@ class AppAdmin extends Component {
               path="/adminPanel/masterSchemeTypes"
               component={MasterSchemeTypes}
             />
-            {/* <Route
+            <Route
               path="/adminPanel/masterMailTemplates/edit/:id"
               children={<MasterMailTemplateAdd />}
             />
             <Route
               path="/adminPanel/masterMailTemplates/add"
               children={<MasterMailTemplateAdd />}
-            /> */}
+            />
           </Switch>
           {/* <Footer></Footer> */}
           <GlobalModal></GlobalModal>

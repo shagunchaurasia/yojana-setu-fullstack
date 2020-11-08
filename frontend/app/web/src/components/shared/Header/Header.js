@@ -16,8 +16,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import Icon from "@material-ui/core/Icon";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -25,6 +24,9 @@ import { toggleSideMenu } from "./../../../redux/sideMenu/sideMenu.action";
 import { selectSideToggleValue } from "./../../../redux/sideMenu/sideMenu.selector";
 
 const Header = (props) => {
+  const generateIcon = (iconName) => {
+    console.log("icon name is " + iconName);
+  };
   const drawerWidth = props.drawerWidth;
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -163,19 +165,56 @@ const Header = (props) => {
         <Divider />
         <List>
           {Object.values([
-            { text: "Schemes", link: "masterSchemes" },
-            { text: "Users", link: "masterUser" },
-            { text: "Scheme Types", link: "masterSchemeTypes" },
-            { text: "States", link: "state" },
-            { text: "Cities", link: "masterCities" },
-            { text: "Mail Templates", link: "masterMailTemplates" },
-            { text: "Mail History", link: "masterMails" },
-            { text: "Send Mail", link: "masterSendMail" },
+            { text: "Schemes", link: "masterSchemes", icon: "list" },
+            {
+              text: "Scheme Types",
+              link: "masterSchemeTypes",
+              icon: "view_list_outlined",
+            },
           ]).map((data, index) => (
             <span onClick={() => redirectToLink(data.link)}>
               <ListItem button key={data.text}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  <Icon>{data.icon} </Icon>
+                </ListItemIcon>
+                <ListItemText primary={data.text} />
+              </ListItem>
+            </span>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {Object.values([
+            { text: "Users", link: "masterUser", icon: "people_sharp" },
+            { text: "States", link: "state", icon: "place_rounded" },
+            { text: "Cities", link: "masterCities", icon: "place_two_tone" },
+          ]).map((data, index) => (
+            <span onClick={() => redirectToLink(data.link)}>
+              <ListItem button key={data.text}>
+                <ListItemIcon>
+                  <Icon>{data.icon} </Icon>
+                </ListItemIcon>
+                <ListItemText primary={data.text} />
+              </ListItem>
+            </span>
+          ))}
+        </List>
+        <Divider />
+
+        <List>
+          {Object.values([
+            {
+              text: "Mail Templates",
+              link: "masterMailTemplates",
+              icon: "contact_mail_two_tone",
+            },
+            { text: "Mail History", link: "masterMails", icon: "all_inbox" },
+            { text: "Send Mail", link: "alternate_email", icon: "send" },
+          ]).map((data, index) => (
+            <span onClick={() => redirectToLink(data.link)}>
+              <ListItem button key={data.text}>
+                <ListItemIcon>
+                  <Icon>{data.icon} </Icon>
                 </ListItemIcon>
                 <ListItemText primary={data.text} />
               </ListItem>
