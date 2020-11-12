@@ -11,6 +11,13 @@ obj.fetchAll = function (...args) {
   let totalDataCount = 0;
   queryString = JSON.parse(queryString);
 
+  console.log(sort);
+  if (typeof sort == "undefined") {
+    sort = "-addedDate";
+  }
+
+  console.log("SORT==========");
+  console.log(sort);
   return new Promise(function (resolve, reject) {
     MailTemplateModel.count(queryString).exec((error, count) => {
       if (error) {
